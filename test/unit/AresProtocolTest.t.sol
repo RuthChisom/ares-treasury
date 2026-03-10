@@ -46,7 +46,9 @@ contract AresProtocolTest is Test {
         distributor = new RewardDistributor(address(token), admin);
         
         token.mint(address(distributor), 1000 ether);
+        token.mint(address(timelock), 1000 ether); // Give timelock some tokens for direct execution test
         vm.deal(address(treasury), 10 ether);
+        vm.deal(address(proposalManager), 10 ether);
         
         vm.stopPrank();
     }
@@ -59,8 +61,8 @@ contract AresProtocolTest is Test {
 
         assertEq(uint256(proposalManager.state(propId)), uint256(IProposalManager.ProposalState.Pending));
 
-        // Warp to active state
-        vm.warp(block.timestamp + 1);
+        // Warp to next block to make it Active
+        vm.roll(block.number + 1);
 
         // Votes
         vm.prank(approver1);
@@ -78,7 +80,6 @@ contract AresProtocolTest is Test {
         // Queue
         vm.prank(admin);
         proposalManager.queue(propId);
-        // Note: For simplicity in this implementation, queue doesn't change state but check Succeed.
 
         // Execute 
         vm.prank(admin);
