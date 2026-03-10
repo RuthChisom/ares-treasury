@@ -1,66 +1,99 @@
-## Foundry
+# Ares Treasury Governance Protocol
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+Ares is a modular, secure, and highly flexible treasury governance protocol designed for decentralized organizations. It features a layered architecture that decouples asset management, proposal registration, and time-delayed execution.
 
-Foundry consists of:
+## 🚀 Key Features
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- **Modular Architecture**: Separate layers for core funds, governance logic, and execution timing.
+- **Proposal Lifecycle**: Robust state machine (Pending, Active, Succeeded, Queued, Executed).
+- **Timelock Execution**: Mandatory 48-hour delay for all governance actions to ensure community safety.
+- **Merkle Reward Claims**: Scalable, gas-efficient reward distribution to thousands of users.
+- **EIP-712 Signatures**: Secure off-chain approval verification with domain separators and replay protection.
+- **Security First**: Built with Solidity 0.8.20, OpenZeppelin 5.x, and comprehensive reentrancy protection.
 
-## Documentation
+## 📂 Project Structure
 
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```text
+ares-treasury/
+├── src/
+│   ├── core/           # Fund storage (ARESTreasury.sol)
+│   ├── interfaces/     # Protocol interfaces (ITreasury, ITimelockEngine, etc.)
+│   ├── libraries/      # Cryptographic helpers (SignatureVerifier.sol)
+│   └── modules/        # Logic (ProposalManager, TimelockEngine, RewardDistributor)
+├── test/
+│   ├── unit/           # Functional tests for all components
+│   └── security/       # Attack simulations and invariant checks
+├── ARCHITECTURE.md     # System design and module separation
+└── SECURITY.md         # Attack surface analysis and mitigations
 ```
 
-### Test
+## 📜 Documentation
 
-```shell
-$ forge test
+For deep dives into the system design and security model, please refer to:
+- 🏗️ **[Architecture Document](./ARCHITECTURE.md)**: Explains the module hierarchy and trust assumptions.
+- 🛡️ **[Security Analysis](./SECURITY.md)**: Analyzes major attack surfaces and how they are mitigated.
+
+## 🛠️ Getting Started
+
+### Prerequisites
+
+- [Foundry](https://book.getfoundry.sh/getting-started/installation) (Forge, Cast, Anvil)
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/RuthChisom/ares-treasury.git
+   cd ares-treasury
+   ```
+
+2. Install dependencies:
+   ```bash
+   forge install
+   ```
+
+3. Build the project:
+   ```bash
+   forge build
+   ```
+
+## 🧪 Testing
+
+The protocol includes a rigorous test suite covering functional requirements and security invariants.
+
+### Run All Tests
+```bash
+forge test
 ```
 
-### Format
-
-```shell
-$ forge fmt
+### Run Unit Tests Only
+```bash
+forge test --match-path test/unit/*
 ```
 
-### Gas Snapshots
-
-```shell
-$ forge snapshot
+### Run Security Attack Simulations
+```bash
+forge test --match-path test/security/* -vv
 ```
 
-### Anvil
-
-```shell
-$ anvil
+### View Coverage Report
+```bash
+forge coverage
 ```
 
-### Deploy
+## ⚙️ Core Components
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+### ARESTreasury
+The final vault that holds protocol assets. It only executes calls authorized by the `TimelockEngine`.
 
-### Cast
+### ProposalManager
+The entry point for governance. It tracks the status of proposals and tallies votes according to the 3-vote quorum (configurable).
 
-```shell
-$ cast <subcommand>
-```
+### TimelockEngine
+The safety gatekeeper. It enforces a 2-day `MINIMUM_DELAY` before any treasury action can be executed, providing a buffer for users to react to governance decisions.
 
-### Help
+### RewardDistributor
+A scalable claim system. It allows users to claim rewards using Merkle Proofs, ensuring the protocol can distribute funds to an unlimited number of recipients without on-chain gas scaling issues.
 
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+## ⚖️ License
+Distributed under the MIT License. See `LICENSE` for more information.
