@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-interface ITimelock {
+interface ITimelockEngine {
     event CallQueued(bytes32 indexed id, address indexed target, uint256 value, bytes data, uint256 eta);
     event CallExecuted(bytes32 indexed id, address indexed target, uint256 value, bytes data);
     event CallCancelled(bytes32 indexed id);
