@@ -48,7 +48,7 @@ library SignatureVerifier {
      */
     function verifyProposalApproval(
         bytes32 domainSeparator,
-        ProposalApproval calldata approval,
+        ProposalApproval memory approval,
         uint8 v,
         bytes32 r,
         bytes32 s

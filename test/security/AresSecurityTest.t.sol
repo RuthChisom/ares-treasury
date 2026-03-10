@@ -2,11 +2,11 @@
 pragma solidity ^0.8.20;
 
 import {Test, console2} from "forge-std/Test.sol";
-import {ProposalManager} from "src/modules/ProposalManager.sol";
-import {TimelockEngine} from "src/modules/TimelockEngine.sol";
-import {RewardDistributor} from "src/modules/RewardDistributor.sol";
-import {ARESTreasury} from "src/core/ARESTreasury.sol";
-import {SignatureVerifier} from "src/libraries/SignatureVerifier.sol";
+import {ProposalManager} from "../../src/modules/ProposalManager.sol";
+import {TimelockEngine} from "../../src/modules/TimelockEngine.sol";
+import {RewardDistributor} from "../../src/modules/RewardDistributor.sol";
+import {ARESTreasury} from "../../src/core/ARESTreasury.sol";
+import {SignatureVerifier} from "../../src/libraries/SignatureVerifier.sol";
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 // --- Mock Malicious Contracts ---
@@ -128,8 +128,8 @@ contract AresSecurityTest is Test {
     // --- 5. Proposal Replay ---
     function testSecurityProposalReplay() public {
         vm.startPrank(user);
-        uint256 id1 = proposalManager.propose(address(0x1), 0, "");
-        uint256 id2 = proposalManager.propose(address(0x1), 0, "");
+        uint256 id1 = proposalManager.propose(address(0x1), 0, "", "1");
+        uint256 id2 = proposalManager.propose(address(0x1), 0, "", "2");
         
         // Each proposal must have a unique ID even with identical parameters
         assertEq(id1, 1);
@@ -170,7 +170,7 @@ contract AresSecurityTest is Test {
     // --- 8. Governance Griefing ---
     function testSecurityGriefing() public {
         vm.prank(admin);
-        uint256 id = proposalManager.propose(address(0x1), 0, "");
+        uint256 id = proposalManager.propose(address(0x1), 0, "", "Grief");
         
         // Attacker attempts to cancel a proposal they didn't create
         vm.prank(attacker);

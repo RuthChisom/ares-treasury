@@ -10,7 +10,7 @@ contract Authorization is IAuthorization {
     function verify(address account, bytes32 digest, Sig calldata sig) public pure returns (bool) {
         // Equivalent to MessageHashUtils.toEthSignedMessageHash(digest)
         bytes32 ethSignedMessageHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", digest));
-        address recoveredSigner = ethSignedMessageHash.recover(sig.r, sig.s, sig.v);
+        address recoveredSigner = ethSignedMessageHash.recover(sig.v, sig.r, sig.s);
         return recoveredSigner == account;
     }
 }
