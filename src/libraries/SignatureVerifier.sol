@@ -2,12 +2,12 @@
 pragma solidity ^0.8.20;
 
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
-import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
 /**
  * @title SignatureVerifier
  * @dev Library for verifying EIP-712 structured signatures for treasury proposals.
  * Provides protection against replay attacks via nonces and domain separators.
+ * Compatible with Solidity 0.8.20.
  */
 library SignatureVerifier {
     using ECDSA for bytes32;
@@ -62,7 +62,8 @@ library SignatureVerifier {
             )
         );
 
-        bytes32 digest = MessageHashUtils.toTypedDataHash(domainSeparator, structHash);
+        // Standard EIP-712 hashing: keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash))
+        bytes32 digest = keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
         return digest.recover(v, r, s);
     }
 }

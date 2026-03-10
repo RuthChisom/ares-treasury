@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import {ITimelock} from "../interfaces/ITimelock.sol";
+import {ITimelockEngine} from "../interfaces/ITimelockEngine.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Timelock is ITimelock, Ownable {
+contract TimelockEngine is ITimelockEngine, Ownable {
     uint256 public delay;
     mapping(bytes32 => bool) public queued;
 
