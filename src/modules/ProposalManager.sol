@@ -6,8 +6,8 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {SignatureVerifier} from "../libraries/SignatureVerifier.sol";
 
 /**
- * @title ProposalManager
- * @dev Manages the lifecycle of treasury proposals, supporting transfers, calls, and upgrades.
+ * ProposalManager
+ * Manages the lifecycle of treasury proposals, supporting transfers, calls, and upgrades.
  */
 contract ProposalManager is IProposalManager, Ownable {
     using SignatureVerifier for bytes32;
@@ -22,7 +22,7 @@ contract ProposalManager is IProposalManager, Ownable {
     constructor(address initialOwner) Ownable(initialOwner) {}
 
     /**
-     * @dev Creates a new treasury proposal.
+     * Creates a new treasury proposal.
      * Prevents replay using a global proposal counter.
      */
     function propose(address target, uint256 value, bytes calldata data, string calldata description) external override returns (uint256) {
@@ -44,9 +44,7 @@ contract ProposalManager is IProposalManager, Ownable {
         return id;
     }
 
-    /**
-     * @dev Approves a proposal. Interface uses castVote for logic.
-     */
+    // Approves a proposal. Interface uses castVote for logic.
     function castVote(uint256 proposalId, bool support) external override {
         require(state(proposalId) == ProposalState.Active, "Proposal not active");
         require(!hasVoted[proposalId][msg.sender], "Already voted");
@@ -62,18 +60,14 @@ contract ProposalManager is IProposalManager, Ownable {
         emit VoteCast(msg.sender, proposalId, support, 1);
     }
 
-    /**
-     * @dev Queues an approved proposal for execution.
-     */
+    // Queues an approved proposal for execution.
     function queue(uint256 proposalId) external onlyOwner {
         require(state(proposalId) == ProposalState.Succeeded, "Proposal not succeeded");
         // State will become Queued if the logic supports it. 
         // For now let's just use it to mark progress.
     }
 
-    /**
-     * @dev Executes a succeeded proposal.
-     */
+    // Executes a succeeded proposal.
     function execute(uint256 proposalId) external payable onlyOwner {
         require(state(proposalId) == ProposalState.Succeeded, "Proposal not succeeded");
 
@@ -86,9 +80,7 @@ contract ProposalManager is IProposalManager, Ownable {
         emit ProposalExecuted(proposalId);
     }
 
-    /**
-     * @dev Cancels a proposal.
-     */
+    // Cancels a proposal.
     function cancel(uint256 proposalId) external {
         Proposal storage p = proposals[proposalId];
         require(msg.sender == p.proposer || msg.sender == owner(), "Unauthorized");
@@ -98,9 +90,7 @@ contract ProposalManager is IProposalManager, Ownable {
         // Interface doesn't have cancel event but let's just skip it or add if needed.
     }
 
-    /**
-     * @dev Returns the current state of a proposal.
-     */
+    // Returns the current state of a proposal.
     function state(uint256 proposalId) public view override returns (ProposalState) {
         Proposal storage p = proposals[proposalId];
         if (p.canceled) return ProposalState.Canceled;

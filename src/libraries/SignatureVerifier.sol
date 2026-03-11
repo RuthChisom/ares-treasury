@@ -4,8 +4,8 @@ pragma solidity ^0.8.20;
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 /**
- * @title SignatureVerifier
- * @dev Library for verifying EIP-712 structured signatures for treasury proposals.
+ * SignatureVerifier
+ * Library for verifying EIP-712 structured signatures for treasury proposals.
  * Provides protection against replay attacks via nonces and domain separators.
  * Compatible with Solidity 0.8.20.
  */
@@ -22,9 +22,7 @@ library SignatureVerifier {
         uint256 nonce;
     }
 
-    /**
-     * @dev Computes the EIP-712 domain separator.
-     */
+    // Computes the EIP-712 domain separator.
     function computeDomainSeparator(string memory name, string memory version) internal view returns (bytes32) {
         return keccak256(
             abi.encode(
@@ -38,7 +36,7 @@ library SignatureVerifier {
     }
 
     /**
-     * @dev Verifies a ProposalApproval signature.
+     * Verifies a ProposalApproval signature.
      * @param domainSeparator The EIP-712 domain separator.
      * @param approval The structured approval data.
      * @param v Recovery id.

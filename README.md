@@ -2,7 +2,7 @@
 
 Ares is a modular, secure, and highly flexible treasury governance protocol designed for decentralized organizations. It features a layered architecture that decouples asset management, proposal registration, and time-delayed execution.
 
-## 🚀 Key Features
+## Key Features
 
 - **Modular Architecture**: Separate layers for core funds, governance logic, and execution timing.
 - **Proposal Lifecycle**: Robust state machine (Pending, Active, Succeeded, Queued, Executed).
@@ -11,7 +11,7 @@ Ares is a modular, secure, and highly flexible treasury governance protocol desi
 - **EIP-712 Signatures**: Secure off-chain approval verification with domain separators and replay protection.
 - **Security First**: Built with Solidity 0.8.20, OpenZeppelin 5.x, and comprehensive reentrancy protection.
 
-## 📂 Project Structure
+## Project Structure
 
 ```text
 ares-treasury/
@@ -27,13 +27,13 @@ ares-treasury/
 └── SECURITY.md         # Attack surface analysis and mitigations
 ```
 
-## 📜 Documentation
+## Documentation
 
 For deep dives into the system design and security model, please refer to:
-- 🏗️ **[Architecture Document](./ARCHITECTURE.md)**: Explains the module hierarchy and trust assumptions.
-- 🛡️ **[Security Analysis](./SECURITY.md)**: Analyzes major attack surfaces and how they are mitigated.
+- **[Architecture Document](./ARCHITECTURE.md)**: Explains the module hierarchy and trust assumptions.
+- **[Security Analysis](./SECURITY.md)**: Analyzes major attack surfaces and how they are mitigated.
 
-## 🛠️ Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -57,7 +57,7 @@ For deep dives into the system design and security model, please refer to:
    forge build
    ```
 
-## 🧪 Testing
+## Testing
 
 The protocol includes a rigorous test suite covering functional requirements and security invariants.
 
@@ -81,7 +81,7 @@ forge test --match-path test/security/* -vv
 forge coverage
 ```
 
-## ⚙️ Core Components
+## Core Components
 
 ### ARESTreasury
 The final vault that holds protocol assets. It only executes calls authorized by the `TimelockEngine`.
@@ -94,6 +94,4 @@ The safety gatekeeper. It enforces a 2-day `MINIMUM_DELAY` before any treasury a
 
 ### RewardDistributor
 A scalable claim system. It allows users to claim rewards using Merkle Proofs, ensuring the protocol can distribute funds to an unlimited number of recipients without on-chain gas scaling issues.
-
-## ⚖️ License
 Distributed under the MIT License. See `LICENSE` for more information.

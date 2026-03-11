@@ -8,8 +8,8 @@ import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
- * @title RewardDistributor
- * @dev Distributes ERC20 tokens to multiple recipients using Merkle tree proofs.
+ * RewardDistributor
+ * Distributes ERC20 tokens to multiple recipients using Merkle tree proofs.
  */
 contract RewardDistributor is IRewardDistributor, Ownable {
     using SafeERC20 for IERC20;
@@ -35,7 +35,7 @@ contract RewardDistributor is IRewardDistributor, Ownable {
     }
 
     /**
-     * @dev Updates the Merkle root for a new reward distribution cycle.
+     * Updates the Merkle root for a new reward distribution cycle.
      * @param _newRoot The new Merkle root.
      */
     function setRoot(bytes32 _newRoot) external onlyOwner {
@@ -44,7 +44,7 @@ contract RewardDistributor is IRewardDistributor, Ownable {
     }
 
     /**
-     * @dev Claims rewards for a specific user.
+     * Claims rewards for a specific user.
      * @param index The index of the leaf in the Merkle tree.
      * @param account The address of the recipient.
      * @param amount The amount of tokens to claim.
@@ -65,7 +65,7 @@ contract RewardDistributor is IRewardDistributor, Ownable {
     }
 
     /**
-     * @dev Returns true if the index has been claimed.
+     * Returns true if the index has been claimed.
      */
     function isClaimed(uint256 index) public view returns (bool) {
         return _isClaimed[index];
